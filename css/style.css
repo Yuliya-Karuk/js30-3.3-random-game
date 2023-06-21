@@ -1,0 +1,62 @@
+:root {
+    --basic-white: #ffffff;
+    --basic-black: #000000;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+}
+
+img {
+    height: auto;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.25;
+}
+
+.page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0;
+    background-color: #333;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.game-board {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+
+    display: grid;
+    grid-template-columns: repeat(4, 20vmin);
+    grid-template-rows: repeat(4, 20vmin);
+    gap: 2vmin;
+    border-radius: 1vmin;
+}
+
+.cell {
+    background-color: #444;
+    border-radius: 1vmin;
+}
