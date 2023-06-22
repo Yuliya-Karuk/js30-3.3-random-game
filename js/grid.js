@@ -7,7 +7,7 @@ export class Grid {
         this.cells = []
     }
 
-    // создает поле с клетками
+    // создает поле с ячейками
     createGrid(gridElement) {
         for (let i = 0; i < this.cellsCount; i++) {
             this.cells.push(

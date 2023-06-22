@@ -7,13 +7,13 @@ export class Cell {
         this.y = y;
     }
 
-    //связывает пустую ячейку с плиточкой
+    //связывает пустую ячейку с плиткой
     linkTile(tile) {
         tile.setXY(this.x, this.y);
         this.linkedTile = tile;
     }
 
-    // возвращает true или false в зависимости привязана ли к ячейке плиточка
+    // возвращает true или false в зависимости пустая ячейка или к ней уже привязана плитка
     isEmpty() {
         return !this.linkedTile;
     }
