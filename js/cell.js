@@ -6,4 +6,15 @@ export class Cell {
         this.x = x;
         this.y = y;
     }
+
+    //связывает пустую ячейку с плиточкой
+    linkTile(tile) {
+        tile.setXY(this.x, this.y);
+        this.linkedTile = tile;
+    }
+
+    // возвращает true или false в зависимости привязана ли к ячейке плиточка
+    isEmpty() {
+        return !this.linkedTile;
+    }
 }
