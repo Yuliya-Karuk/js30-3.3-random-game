@@ -8,9 +8,12 @@ const gameBoard = document.querySelector('.game-board') // <form> для пои�
 const grid = new Grid(4);
 grid.createGrid(gameBoard)
 
-// созадли новую плитку и связали ее с рандомной пустой ячейкой
-const tile = new Tile(gameBoard)
-const emptyCell = grid.getRandomEmptyCell()
-emptyCell.linkTile(tile)
+// создали новую плитку и связали ее с рандомной пустой ячейкой
+function createTile() {
+    let tile = new Tile(gameBoard)
+    let emptyCell = grid.getRandomEmptyCell()
+    emptyCell.linkTile(tile)
+}
 
-// grid.getRandomEmptyCell().linkTile( new Tile(gameBoard))
+createTile()
+createTile()

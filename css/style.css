@@ -88,12 +88,12 @@ body {
     
     width: var(--cell-size);
     height: var(--cell-size);
-    background-color: var(--basic-white);
+    background-color: hsl(25, 60%, var(--bg-lightness));
     border-radius: 1vmin;
 
     font-size: 7.5vmin;
     font-weight: 700;
-    color: var(--basic-black);
+    color: hsl(25, 60%, var(--text-lightness));;
 
     transition: 400ms;
     animation: show 500ms;
