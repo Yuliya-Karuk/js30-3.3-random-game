@@ -29,6 +29,14 @@ export class Grid {
         return this.cellsGroupedByColumn().map(column => [...column].reverse());
     }
 
+    // функция, которая группирует ячейки по строкам. Получается массив из 4 массивов
+    cellsGroupedByRow() {
+        return this.cells.reduce(((groupedCells, cell, index) => {
+            groupedCells[Math.floor(index / this.gridSize)].push(cell);
+            return groupedCells;
+        }), [[], [], [], []])
+    }
+
     // берет случайную пустую ячейку на всей доске
     getRandomEmptyCell() {
         const emptyCells = this.cells.filter(cell => cell.isEmpty());
