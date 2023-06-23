@@ -6,6 +6,8 @@ const gameBoard = document.querySelector('.game-board') // блок с игро�
 const popUpTop = document.querySelector('.popup-best') // попап с топ 10
 const buttonTop = document.querySelector('.top-ten') // кнопка показать топ 10
 const buttonNewGame = document.querySelector('.new-game') // кнопка запустить новую игру
+const fieldScore = document.querySelector('.score') // поле, где выводятся очки за игру
+let score = 0
 
 let grid;
 
@@ -119,7 +121,8 @@ async function slidesTiles(groupedCells) { // смещение плиток вв
 
     grid.cells.forEach(cell => {
         if (cell.hasTileForMerge()) {
-            cell.mergeTiles();
+            score = score + cell.mergeTiles();
+            fieldScore.innerHTML = `${score}`
         } 
     })
 }
