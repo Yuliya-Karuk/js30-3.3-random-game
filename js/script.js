@@ -20,6 +20,10 @@ function listenKeyboardOneClick() {
     window.addEventListener("keydown", handleInput, {once: true})
 }
 
+createTile() // cоздали 2 ячейки и запустили листенер движения
+createTile()
+listenKeyboardOneClick()
+
 //функция, которая выполняет перемещение ячеек в зависимости от нажатой клавиши
 function handleInput(evt) {
     switch (evt.key) {
@@ -36,12 +40,14 @@ function handleInput(evt) {
             break;
 
         case "ArrowRight":
+            moveRight();
             break;
         default:
             listenKeyboardOneClick()
             return;
     }
 
+    createTile()
     listenKeyboardOneClick()
 }
 
@@ -57,8 +63,12 @@ function moveDown() {
 
 // функция движения влево
 function moveLeft() {
-    console.log(grid.cellsGroupedByRow())
     slidesTiles(grid.cellsGroupedByRow());
+}
+
+// функция движения вправо
+function moveRight() {
+    slidesTiles(grid.cellsGroupedByReversedRow());
 }
 
 function slidesTiles(groupedCells) { // смещение плиток вверх по группу
@@ -100,7 +110,3 @@ function slideTilesInGroup(group) { // смещение каждой плитк�
         cellWithTile.unlinkTile();
     }
 }
-
-createTile()
-createTile()
-listenKeyboardOneClick()

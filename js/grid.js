@@ -37,6 +37,11 @@ export class Grid {
         }), [[], [], [], []])
     }
 
+    // функция, которая в группированнои массиве по строкам меняет направление элементов
+    cellsGroupedByReversedRow() {
+        return this.cellsGroupedByRow().map(column => [...column].reverse());
+    }
+
     // берет случайную пустую ячейку на всей доске
     getRandomEmptyCell() {
         const emptyCells = this.cells.filter(cell => cell.isEmpty());
