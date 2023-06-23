@@ -7,19 +7,30 @@ const popUpTop = document.querySelector('.popup-best') // попап с топ 1
 const buttonTop = document.querySelector('.top-ten') // кнопка показать топ 10
 const buttonNewGame = document.querySelector('.new-game') // кнопка запустить новую игру
 const fieldScore = document.querySelector('.score') // поле, где выводятся очки за игру
-let score = 0
+const popUpGameOver= document.querySelector('.popup-gameover') // попап, если ты проиграл
+const fieldGameoverScore= document.querySelector('.gameover-score') // очки за проигранную игру
+const fieldBestScore= document.querySelector('.best-score') // очки за проигранную игру
+let score = 0;
+let bestScore = 0;
 
 let grid;
 
 //функция которая запускает новую игру 
 function startNewGame() {
-    gameBoard.innerHTML = ''
+    gameBoard.innerHTML = '';
+    score = 0;
     grid = new Grid(4);
     grid.createGrid(gameBoard)
     createTile()
     createTile()
     listenKeyboardOneClick()
     buttonNewGame.blur()
+}
+
+function endGame() {
+    popUpGameOver.classList.remove('visually-hidden');
+    fieldGameoverScore.innerHTML = `${score}`;
+    fieldBestScore.innerHTML = `${bestScore}`
 }
 
 document.addEventListener("DOMContentLoaded", startNewGame); 
@@ -85,7 +96,7 @@ async function handleInput(evt) {
 
     if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
         await newTile.waitForAnimationEnd();
-        alert('New game');
+        endGame()
         return;
     }
 

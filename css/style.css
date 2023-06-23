@@ -172,7 +172,7 @@ body {
 }
 
 /* POP UP */
-.popup-best {
+.popup {
     position: fixed;
     top: 15%;
     left: 30%;
@@ -186,6 +186,32 @@ body {
     text-align: center;
     margin: 0;
     margin-bottom: 15px;
+}
+
+.gameover-text {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 50px;
+}
+
+.gameover-button {
+    background-color: rgba(51, 51, 51, 0.8);
+    color: var(--basic-white);
+    border-radius: 15px;
+    border: none;
+    outline: none;
+
+    display: block;
+    padding: 10px 20px;
+    margin: 0 auto;
+
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+
+.gameover-button:hover,
+.gameover-button:focus {
+    box-shadow: 0px 0px 5px 3px rgba(255, 255, 255, 0.5);
 }
 
 /* MAIN */
