@@ -28,18 +28,38 @@ listenKeyboardOneClick()
 async function handleInput(evt) {
     switch (evt.key) {
         case "ArrowUp":
+            if (!canMoveUp()) {
+                listenKeyboardOneClick()
+                return;
+            }
+            
             await moveUp()
             break;
 
         case "ArrowDown":
+            if (!canMoveDown()) {
+                listenKeyboardOneClick()
+                return;
+            }
+
             await moveDown();
             break;
 
         case "ArrowLeft":
+            if (!canMoveLeft()) {
+                listenKeyboardOneClick()
+                return;
+            }
+
             await moveLeft();
             break;
 
         case "ArrowRight":
+            if (!canMoveRight()) {
+                listenKeyboardOneClick()
+                return;
+            }
+
             await moveRight();
             break;
         default:
@@ -114,4 +134,41 @@ function slideTilesInGroup(group, promises) { // смещение каждой �
 
         cellWithTile.unlinkTile();
     }
+}
+
+// функции, которые проверяют при клике на стрелку будет ли двигаться хоть 1 ячейка.
+// Чтобы при клике на стрелку, если ничего не двигается, не возникала новая плитка
+function canMoveUp() {
+    return canMove(grid.cellsGroupedByColumn())
+}
+
+function canMoveDown() {
+    return canMove(grid.cellsGroupedByReversedColumn())
+}
+
+function canMoveLeft() {
+    return canMove(grid.cellsGroupedByRow())
+}
+
+function canMoveRight() {
+    return canMove(grid.cellsGroupedByReversedRow())
+}
+
+function canMove(groupedCells) {
+    return groupedCells.some(group => canMoveInGroup(group));
+}
+
+function canMoveInGroup(group) {
+    return group.some((cell, index) => {
+        if (index === 0) {
+            return false
+        }
+
+        if (cell.isEmpty()) {
+            return false
+        }
+
+        const targetCell = group[index - 1]
+        return targetCell.canAccept(cell.linkedTile);
+    });
 }
