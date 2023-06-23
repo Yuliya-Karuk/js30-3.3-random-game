@@ -24,6 +24,11 @@ export class Grid {
         }), [[], [], [], []])
     }
 
+    // функция, которая в группированнои массиве по столбцам меняет направление элементов
+    cellsGroupedByReversedColumn() {
+        return this.cellsGroupedByColumn().map(column => [...column].reverse());
+    }
+
     // берет случайную пустую ячейку на всей доске
     getRandomEmptyCell() {
         const emptyCells = this.cells.filter(cell => cell.isEmpty());

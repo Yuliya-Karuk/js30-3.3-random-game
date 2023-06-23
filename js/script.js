@@ -28,6 +28,7 @@ function handleInput(evt) {
             break;
 
         case "ArrowDown":
+            moveDown();
             break;
 
         case "ArrowLeft":
@@ -46,6 +47,11 @@ function handleInput(evt) {
 // функция движения вверх
 function moveUp() {
     slidesTiles(grid.cellsGroupedByColumn());
+}
+
+// функция движения вниз
+function moveDown() {
+    slidesTiles(grid.cellsGroupedByReversedColumn());
 }
 
 function slidesTiles(groupedCells) { // смещение плиток вверх по группу
