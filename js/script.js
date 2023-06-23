@@ -25,22 +25,22 @@ createTile()
 listenKeyboardOneClick()
 
 //функция, которая выполняет перемещение ячеек в зависимости от нажатой клавиши
-function handleInput(evt) {
+async function handleInput(evt) {
     switch (evt.key) {
         case "ArrowUp":
-            moveUp()
+            await moveUp()
             break;
 
         case "ArrowDown":
-            moveDown();
+            await moveDown();
             break;
 
         case "ArrowLeft":
-            moveLeft();
+            await moveLeft();
             break;
 
         case "ArrowRight":
-            moveRight();
+            await moveRight();
             break;
         default:
             listenKeyboardOneClick()
@@ -52,28 +52,31 @@ function handleInput(evt) {
 }
 
 // функция движения вверх
-function moveUp() {
-    slidesTiles(grid.cellsGroupedByColumn());
+async function moveUp() {
+    await slidesTiles(grid.cellsGroupedByColumn());
 }
 
 // функция движения вниз
-function moveDown() {
-    slidesTiles(grid.cellsGroupedByReversedColumn());
+async function moveDown() {
+    await slidesTiles(grid.cellsGroupedByReversedColumn());
 }
 
 // функция движения влево
-function moveLeft() {
-    slidesTiles(grid.cellsGroupedByRow());
+async function moveLeft() {
+    await slidesTiles(grid.cellsGroupedByRow());
 }
 
 // функция движения вправо
-function moveRight() {
-    slidesTiles(grid.cellsGroupedByReversedRow());
+async function moveRight() {
+    await slidesTiles(grid.cellsGroupedByReversedRow());
 }
 
-function slidesTiles(groupedCells) { // смещение плиток вверх по группу
+async function slidesTiles(groupedCells) { // смещение плиток вверх по группу
+    const promises = [];
     console.log(groupedCells)
-    groupedCells.forEach(group => slideTilesInGroup(group));
+    groupedCells.forEach(group => slideTilesInGroup(group, promises));
+
+    await Promise.all(promises);
 
     grid.cells.forEach(cell => {
         if (cell.hasTileForMerge()) {
@@ -82,7 +85,7 @@ function slidesTiles(groupedCells) { // смещение плиток вверх
     })
 }
 
-function slideTilesInGroup(group) { // смещение каждой плитки
+function slideTilesInGroup(group, promises) { // смещение каждой плитки
     for(let i = 1; i < group.length; i++) {
         if (group[i].isEmpty()) {
             continue;
@@ -100,6 +103,8 @@ function slideTilesInGroup(group) { // смещение каждой плитк�
         if (!targetCell) {
             continue;
         }
+
+        promises.push(cellWithTile.linkedTile.waitForTransitionEnd())
 
         if (targetCell.isEmpty()) {
             targetCell.linkTile(cellWithTile.linkedTile);
