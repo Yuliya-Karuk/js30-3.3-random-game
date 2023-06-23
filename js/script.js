@@ -13,6 +13,7 @@ function createTile() {
     let tile = new Tile(gameBoard)
     let emptyCell = grid.getRandomEmptyCell()
     emptyCell.linkTile(tile)
+    return tile
 }
 
 // функция, которая слушает нажатие клавишы 1 раз
@@ -67,7 +68,14 @@ async function handleInput(evt) {
             return;
     }
 
-    createTile()
+    const newTile = createTile()
+
+    if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
+        await newTile.waitForAnimationEnd();
+        alert('New game');
+        return;
+    }
+
     listenKeyboardOneClick()
 }
 
