@@ -1,9 +1,10 @@
 :root {
     --basic-white: #ffffff;
+    --basic-color: #edd1b6;
     --basic-black: #000000;
     --x: 0;
     --y: 0;
-    --cell-size: 20vmin;
+    --cell-size: 15vmin;
     --cell-gap: 2vmin;
 }
 
@@ -33,6 +34,7 @@ body {
     font-weight: 700;
     font-size: 16px;
     line-height: 1.25;
+    color: var(--basic-color);
 }
 
 .page {
@@ -40,11 +42,135 @@ body {
     margin: 0 auto;
     padding: 0;
     background-color: #333;
+    background-image: url(../images/bg4.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
 
-    display: flex;
+    /* display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100vh; */
+}
+
+/* HEADER */
+.header {
+    background: rgba(51, 51, 51, 0.5);
+    box-shadow: 0px -8px 10px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(12.5px);
+
+    padding: 20px 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.header-title {
+    font-size: 36px;
+
+    margin: 0;
+}
+
+.header-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+
+    margin: 0;
+    padding: 0;
+
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.header-item {
+    width: calc(2 * var(--cell-size));
+    margin-right: 20px;
+
+    border: 1px solid rgba(51, 51, 51, 0.8);
+    background-color: rgba(51, 51, 51, 0.8);
+
+    border-radius: 15px;
+    padding: 5px 10px;
+}
+
+.header-item:last-of-type {
+    margin-right: 0;
+}
+
+.header-btn {
+    width: fit-content;
+    transition-duration: 0.3s;
+}
+
+.new-game,
+.top-ten {
+    background-color: transparent;
+    
+    border: none;
+    padding: 0;
+    color: inherit;
+
+    cursor: pointer;
+}
+
+.header-btn:focus-within,
+.header-btn:hover {
+    box-shadow: 0px 0px 5px 3px rgba(255, 255, 255, 0.5);
+}
+
+/* FOOTER */
+
+.footer {
+    padding: 20px 80px;
+    font-size: 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: rgba(51, 51, 51, 0.5);
+    box-shadow: 0px -8px 10px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(12.5px);
+}
+
+.github-link,
+.rs-link {
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+
+.github-link path,
+.rs-link path {
+    fill: var(--basic-color);
+}
+
+.github-link:hover,
+.github-link:focus,
+.rs-link:hover,
+.rs-link:focus {
+    transform: scale(1.3);
+}
+
+.github-link:active path,
+.rs-link:active path {
+    fill: var(--basic-white);
+}
+
+.text-copyright {
+    font-size: 20px;
+
+    margin: 0;
+}
+
+/* MAIN */
+
+.main {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0px;
 }
 
 .game-board {
@@ -88,15 +214,15 @@ body {
     
     width: var(--cell-size);
     height: var(--cell-size);
-    background-color: hsl(25, 60%, var(--bg-lightness));
+    background-color: hsl(30, 60%, var(--bg-lightness));
     border-radius: 1vmin;
 
-    font-size: 7.5vmin;
+    font-size: 6.5vmin;
     font-weight: 700;
     color: hsl(25, 60%, var(--text-lightness));;
 
-    transition: 400ms;
-    animation: show 500ms;
+    transition: 0.2s;
+    animation: show 0.3s;
 }
 
 @keyframes show {
@@ -108,5 +234,107 @@ body {
     100% {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+/* MEDIA */
+
+@media screen and (max-width: 900px) {
+}
+
+@media screen and (max-width: 768px) {
+
+    .header {
+        padding: 20px 20px;
+    }
+
+    .header-title {
+        font-size: 28px;
+    }
+
+    .header-item {
+        font-size: 16px;
+    }
+
+    .footer {
+        padding: 20px 20px;
+    }
+
+    .github-link,
+    .rs-link {
+        transform: scale(0.8);
+    }
+
+    .text-copyright {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+
+    .header {
+        padding: 10px 10px;
+    }
+
+    .header-title {
+        font-size: 18px;
+    }
+
+    .header-item {
+        font-size: 12px;
+        margin-right: 5px;
+    }
+
+    .footer {
+        padding: 10px 10px;
+    }
+
+    .text-copyright {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+    .header-title {
+        font-size: 14px;
+    }
+
+    .header-item {
+        font-size: 10px;
+        padding: 5px 8px;
+        width: calc(1.5 * var(--cell-size));
+    }
+
+    .header-btn {
+        width: fit-content;
+    }
+
+    .author-name {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 391px) {
+
+    .header-title {
+        font-size: 12px;
+    }
+
+    .header-item {
+        font-size: 8px;
+    }
+
+    .footer {
+        padding: 0px 10px;
+    }
+
+    .text-copyright {
+        font-size: 10px;
+    }
+
+    .github-link,
+    .rs-link {
+        transform: scale(0.5);
     }
 }
