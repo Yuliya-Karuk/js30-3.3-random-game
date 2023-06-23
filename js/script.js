@@ -2,11 +2,26 @@ import { Grid } from "./grid.js";
 import { Tile } from "./tile.js";
 
 /* SELECTORS */
-const gameBoard = document.querySelector('.game-board') // <form> для поиска
+const gameBoard = document.querySelector('.game-board') // блок с игрой
+const popUpTop = document.querySelector('.popup-best') // попап с топ 10
+const buttonTop = document.querySelector('.top-ten') // кнопка показать топ 10
+const buttonNewGame = document.querySelector('.new-game') // кнопка запустить новую игру
 
-// создали пустую доску ячейками
-const grid = new Grid(4);
-grid.createGrid(gameBoard)
+let grid;
+
+//функция которая запускает новую игру 
+function startNewGame() {
+    gameBoard.innerHTML = ''
+    grid = new Grid(4);
+    grid.createGrid(gameBoard)
+    createTile()
+    createTile()
+    listenKeyboardOneClick()
+    buttonNewGame.blur()
+}
+
+document.addEventListener("DOMContentLoaded", startNewGame); 
+buttonNewGame.addEventListener("click", startNewGame)
 
 // функция создания новую плитки и связаваем ее с рандомной пустой ячейкой
 function createTile() {
@@ -20,10 +35,6 @@ function createTile() {
 function listenKeyboardOneClick() {
     window.addEventListener("keydown", handleInput, {once: true})
 }
-
-createTile() // cоздали 2 ячейки и запустили листенер движения
-createTile()
-listenKeyboardOneClick()
 
 //функция, которая выполняет перемещение ячеек в зависимости от нажатой клавиши
 async function handleInput(evt) {

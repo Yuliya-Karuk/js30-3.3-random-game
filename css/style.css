@@ -102,22 +102,28 @@ body {
 
 .header-btn {
     width: fit-content;
+    padding: 0;
     transition-duration: 0.3s;
 }
 
-.new-game,
-.top-ten {
+.game-btn {
     background-color: transparent;
     
     border: none;
+    outline: none;
+    border-radius: 15px;
     padding: 0;
     color: inherit;
 
     cursor: pointer;
+    padding: 5px 10px;
 }
 
-.header-btn:focus-within,
-.header-btn:hover {
+.game-btn:focus {
+    outline: none;
+}
+
+.game-btn:hover, .game-btn:focus {
     box-shadow: 0px 0px 5px 3px rgba(255, 255, 255, 0.5);
 }
 
@@ -163,6 +169,23 @@ body {
     font-size: 20px;
 
     margin: 0;
+}
+
+/* POP UP */
+.popup-best {
+    position: fixed;
+    top: 15%;
+    left: 30%;
+    right: 30%;
+    background-color: var(--basic-black);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.popup-title {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 15px;
 }
 
 /* MAIN */

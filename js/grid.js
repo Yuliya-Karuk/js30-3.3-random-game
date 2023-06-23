@@ -48,4 +48,5 @@ export class Grid {
         const randomIndex = Math.floor(Math.random() * emptyCells.length);
         return emptyCells[randomIndex]
     }
+
 }
