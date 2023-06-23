@@ -10,16 +10,21 @@ export class Tile {
     setXY(x, y) {
         this.x = x;
         this.y = y;
-        this.tileElement.style.setProperty("--x", this.x)
-        this.tileElement.style.setProperty("--y", this.y)
+        this.tileElement.style.setProperty("--x", this.x);
+        this.tileElement.style.setProperty("--y", this.y);
     }
 
-    // функия
+    // функция, которая устанавливает цвет фона и шрифта в зависимости от значения плитки
     setValue(value) {
         this.tileValue = value;
         this.tileElement.textContent = this.tileValue;
         const bgLightness = 100 - Math.log2(this.tileValue) * 9;
-        this.tileElement.style.setProperty("--bg-lightness", `${bgLightness}%`)
-        this.tileElement.style.setProperty("--text-lightness", `${bgLightness < 50 ? 90 : 10}%`)
+        this.tileElement.style.setProperty("--bg-lightness", `${bgLightness}%`);
+        this.tileElement.style.setProperty("--text-lightness", `${bgLightness < 50 ? 90 : 10}%`);
+    }
+
+    // функция, которая удаляет плитку
+    removeFromDOM() {
+        this.tileElement.remove();
     }
 }

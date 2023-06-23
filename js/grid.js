@@ -16,6 +16,14 @@ export class Grid {
         }
     }
 
+    // функция, которая группирует ячейки по стобцам. Получается массив из 4 массивов
+    cellsGroupedByColumn() {
+        return this.cells.reduce(((groupedCells, cell, index) => {
+            groupedCells[index % this.gridSize].push(cell);
+            return groupedCells;
+        }), [[], [], [], []])
+    }
+
     // берет случайную пустую ячейку на всей доске
     getRandomEmptyCell() {
         const emptyCells = this.cells.filter(cell => cell.isEmpty());
