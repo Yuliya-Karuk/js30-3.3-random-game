@@ -10,6 +10,7 @@ const fieldScore = document.querySelector('.score') // поле, где выво
 const popUpGameOver= document.querySelector('.popup-gameover') // попап, если ты проиграл
 const fieldGameoverScore= document.querySelector('.gameover-score') // очки за проигранную игру
 const fieldBestScore= document.querySelector('.best-score') // очки за проигранную игру
+const buttonGameover = document.querySelector('.gameover-button') //кнопка New game на попапе game over
 let score = 0;
 let bestScore = 0;
 
@@ -17,6 +18,7 @@ let grid;
 
 //функция которая запускает новую игру 
 function startNewGame() {
+    popUpGameOver.classList.add('visually-hidden');
     gameBoard.innerHTML = '';
     score = 0;
     grid = new Grid(4);
@@ -35,6 +37,7 @@ function endGame() {
 
 document.addEventListener("DOMContentLoaded", startNewGame); 
 buttonNewGame.addEventListener("click", startNewGame)
+buttonGameover.addEventListener("click", startNewGame)
 
 // функция создания новую плитки и связаваем ее с рандомной пустой ячейкой
 function createTile() {
