@@ -218,6 +218,18 @@ body {
     display: flex;
 }
 
+.popup-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.top-item {
+    font-size: 18px;
+    margin-bottom: 15px;
+    margin-left: 20px;
+}
+
 /* MAIN */
 
 .main {

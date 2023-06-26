@@ -2,16 +2,16 @@ import { Grid } from "./grid.js";
 import { Tile } from "./tile.js";
 
 /* SELECTORS */
-const gameBoard = document.querySelector('.game-board') // блок с игрой
+const gameBoard = document.querySelector('.game-board'); // блочный элемент div с игрой
 
-const popUpTop = document.querySelector('.popup-best') // попап с топ 10
 const buttonTop = document.querySelector('.top-ten') // кнопка показать топ 10
 const buttonNewGame = document.querySelector('.new-game') // кнопка запустить новую игру
-const fieldScore = document.querySelector('.score') // поле, где выводятся очки за игру
+const fieldScore = document.querySelector('.score') // поле, где выводятся очки за текущую игру
+const fieldBestScore = document.querySelector('.best') // поле, где выводятся лучший результат за полседние 10 игр
 
 const popUpGameOver= document.querySelector('.popup-gameover') // попап, если ты проиграл
 const fieldGameoverScore= document.querySelector('.gameover-score') // очки за проигранную игру
-const fieldBestScore= document.querySelector('.best-score') // лучший результат
+const fieldGameoverBestScore= document.querySelector('.best-score') // лучший результат
 const buttonGameoverNewGame = document.querySelector('.gameover-button') //кнопка New game на попапе game over
 
 const popUpWin = document.querySelector('.popup-win') // попап, если ты выиграл
@@ -19,29 +19,37 @@ const fieldWinScore = document.querySelector('.win-score') // очки за вы
 const fieldWinBestScore = document.querySelector('.win-best-score') // лучший результат
 const buttonWinNewGame = document.querySelector('.win-gameover-button') //кнопка New game на попапе win
 const buttonWinContinue = document.querySelector('.win-continue-button') //кнопка New game на попапе win
-let score = 0;
-let bestScore = 0;
 
+const popUpTop = document.querySelector('.popup-best') // попап с топ 10
+const popUpTopList = document.querySelector('.popup-list') // попап с топ 10
+const buttonCloseTop = document.querySelector('.close-top-button')
+
+let score;
+let bestScore;
 let grid;
 
 //функция которая запускает новую игру 
 function startNewGame() {
+    if (score !== 0) saveGameResult(score);
     if (!popUpGameOver.classList.contains('visually-hidden'))  popUpGameOver.classList.add('visually-hidden');
     if (!popUpWin.classList.contains('visually-hidden')) popUpWin.classList.add('visually-hidden');
     gameBoard.innerHTML = '';
     score = 0;
+    fieldScore.innerHTML = `${score}`;
     grid = new Grid(4);
     grid.createGrid(gameBoard);
     createTile();
     createTile();
-    listenKeyboardOneClick();
     buttonNewGame.blur();
+    listenKeyboardOneClick();
+    showBestScore();
 }
 
 function endGame() {
     popUpGameOver.classList.remove('visually-hidden');
+    saveGameResult(score);
     fieldGameoverScore.innerHTML = `${score}`;
-    fieldBestScore.innerHTML = `${bestScore}`;
+    fieldGameoverBestScore.innerHTML = `${bestScore}`;
 }
 
 function showWin() {
@@ -54,11 +62,69 @@ function hideWin() {
     popUpWin.classList.add('visually-hidden');
 }
 
+function saveGameResult(value) {
+    const games = localStorage.getItem('games');
+
+    console.log(value);
+    if (!games) {
+        const data = JSON.stringify([{score: value}]);
+        localStorage.setItem(`games`, data);
+    } else {
+        const parsedGames = JSON.parse(games);
+        parsedGames.push({score: value});
+
+        if (parsedGames.length > 10) {
+            parsedGames.shift();
+        }
+
+        localStorage.setItem('games', JSON.stringify(parsedGames));
+    }
+}
+
+function sortLocalStorage() {
+    popUpTopList.innerHTML = ''
+    let topResults = []
+    let localStorageArray = JSON.parse(localStorage.games)
+    for (let i = 0; i < localStorageArray.length; i++) {  
+        topResults.push(localStorageArray[i].score)
+    }
+
+    let topSortedResults = topResults.sort((a, b) => b - a)
+    return topSortedResults
+}
+
+function createTop() {
+    popUpTopList.innerHTML = ''
+    let topArray = sortLocalStorage()
+
+    topArray.forEach((el, index) => {
+        popUpTopList.insertAdjacentHTML("beforeend",
+            `<li class="top-item">
+                <span>${index + 1} place score: ${el} </span>
+            </li>`
+        );
+    });
+}
+
+function showTop() {
+    createTop();
+    popUpTop.classList.toggle("visually-hidden");
+}
+
+function showBestScore() {
+    let topArray = sortLocalStorage();
+    console.log(topArray)
+    bestScore = topArray[0];
+    fieldBestScore.innerHTML = `${bestScore}`;
+}
+
 document.addEventListener("DOMContentLoaded", startNewGame); 
 buttonNewGame.addEventListener("click", startNewGame);
 buttonGameoverNewGame.addEventListener("click", startNewGame);
 buttonWinNewGame.addEventListener("click", startNewGame);
 buttonWinContinue.addEventListener("click", hideWin);
+buttonTop.addEventListener("click", showTop);
+buttonCloseTop.addEventListener("click", showTop);
 
 // функция создания новую плитки и связаваем ее с рандомной пустой ячейкой
 function createTile() {
@@ -149,7 +215,6 @@ async function moveRight() {
 
 async function slidesTiles(groupedCells) { // смещение плиток вверх по группу
     const promises = [];
-    console.log(groupedCells);
     groupedCells.forEach(group => slideTilesInGroup(group, promises));
 
     await Promise.all(promises);
@@ -235,3 +300,5 @@ function canMoveInGroup(group) {
         return targetCell.canAccept(cell.linkedTile);
     });
 }
+
+
