@@ -130,7 +130,9 @@ function showTop() {
 // функция - показывать лучший результат в header
 function showBestScore() {
     let topArray = sortLocalStorage();
-    bestScore = topArray[0] ? topArray[0] : 0;
+    if (topArray !== undefined) {
+        bestScore = topArray[0];
+    }
     fieldBestScore.innerHTML = `${bestScore}`;
 }
 
