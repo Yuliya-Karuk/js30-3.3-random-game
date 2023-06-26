@@ -3,14 +3,22 @@ import { Tile } from "./tile.js";
 
 /* SELECTORS */
 const gameBoard = document.querySelector('.game-board') // блок с игрой
+
 const popUpTop = document.querySelector('.popup-best') // попап с топ 10
 const buttonTop = document.querySelector('.top-ten') // кнопка показать топ 10
 const buttonNewGame = document.querySelector('.new-game') // кнопка запустить новую игру
 const fieldScore = document.querySelector('.score') // поле, где выводятся очки за игру
+
 const popUpGameOver= document.querySelector('.popup-gameover') // попап, если ты проиграл
 const fieldGameoverScore= document.querySelector('.gameover-score') // очки за проигранную игру
-const fieldBestScore= document.querySelector('.best-score') // очки за проигранную игру
-const buttonGameover = document.querySelector('.gameover-button') //кнопка New game на попапе game over
+const fieldBestScore= document.querySelector('.best-score') // лучший результат
+const buttonGameoverNewGame = document.querySelector('.gameover-button') //кнопка New game на попапе game over
+
+const popUpWin = document.querySelector('.popup-win') // попап, если ты выиграл
+const fieldWinScore = document.querySelector('.win-score') // очки за выигранную игру
+const fieldWinBestScore = document.querySelector('.win-best-score') // лучший результат
+const buttonWinNewGame = document.querySelector('.win-gameover-button') //кнопка New game на попапе win
+const buttonWinContinue = document.querySelector('.win-continue-button') //кнопка New game на попапе win
 let score = 0;
 let bestScore = 0;
 
@@ -18,38 +26,51 @@ let grid;
 
 //функция которая запускает новую игру 
 function startNewGame() {
-    popUpGameOver.classList.add('visually-hidden');
+    if (!popUpGameOver.classList.contains('visually-hidden'))  popUpGameOver.classList.add('visually-hidden');
+    if (!popUpWin.classList.contains('visually-hidden')) popUpWin.classList.add('visually-hidden');
     gameBoard.innerHTML = '';
     score = 0;
     grid = new Grid(4);
-    grid.createGrid(gameBoard)
-    createTile()
-    createTile()
-    listenKeyboardOneClick()
-    buttonNewGame.blur()
+    grid.createGrid(gameBoard);
+    createTile();
+    createTile();
+    listenKeyboardOneClick();
+    buttonNewGame.blur();
 }
 
 function endGame() {
     popUpGameOver.classList.remove('visually-hidden');
     fieldGameoverScore.innerHTML = `${score}`;
-    fieldBestScore.innerHTML = `${bestScore}`
+    fieldBestScore.innerHTML = `${bestScore}`;
+}
+
+function showWin() {
+    popUpWin.classList.remove('visually-hidden');
+    fieldWinScore.innerHTML = `${score}`;
+    fieldWinBestScore.innerHTML = `${bestScore}`;
+}
+
+function hideWin() {
+    popUpWin.classList.add('visually-hidden');
 }
 
 document.addEventListener("DOMContentLoaded", startNewGame); 
-buttonNewGame.addEventListener("click", startNewGame)
-buttonGameover.addEventListener("click", startNewGame)
+buttonNewGame.addEventListener("click", startNewGame);
+buttonGameoverNewGame.addEventListener("click", startNewGame);
+buttonWinNewGame.addEventListener("click", startNewGame);
+buttonWinContinue.addEventListener("click", hideWin);
 
 // функция создания новую плитки и связаваем ее с рандомной пустой ячейкой
 function createTile() {
-    let tile = new Tile(gameBoard)
-    let emptyCell = grid.getRandomEmptyCell()
-    emptyCell.linkTile(tile)
-    return tile
+    let tile = new Tile(gameBoard);
+    let emptyCell = grid.getRandomEmptyCell();
+    emptyCell.linkTile(tile);
+    return tile;
 }
 
 // функция, которая слушает нажатие клавишы 1 раз
 function listenKeyboardOneClick() {
-    window.addEventListener("keydown", handleInput, {once: true})
+    window.addEventListener("keydown", handleInput, {once: true});
 }
 
 //функция, которая выполняет перемещение ячеек в зависимости от нажатой клавиши
@@ -57,7 +78,7 @@ async function handleInput(evt) {
     switch (evt.key) {
         case "ArrowUp":
             if (!canMoveUp()) {
-                listenKeyboardOneClick()
+                listenKeyboardOneClick();
                 return;
             }
             
@@ -66,7 +87,7 @@ async function handleInput(evt) {
 
         case "ArrowDown":
             if (!canMoveDown()) {
-                listenKeyboardOneClick()
+                listenKeyboardOneClick();
                 return;
             }
 
@@ -75,7 +96,7 @@ async function handleInput(evt) {
 
         case "ArrowLeft":
             if (!canMoveLeft()) {
-                listenKeyboardOneClick()
+                listenKeyboardOneClick();
                 return;
             }
 
@@ -84,14 +105,14 @@ async function handleInput(evt) {
 
         case "ArrowRight":
             if (!canMoveRight()) {
-                listenKeyboardOneClick()
+                listenKeyboardOneClick();
                 return;
             }
 
             await moveRight();
             break;
         default:
-            listenKeyboardOneClick()
+            listenKeyboardOneClick();
             return;
     }
 
@@ -99,11 +120,11 @@ async function handleInput(evt) {
 
     if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
         await newTile.waitForAnimationEnd();
-        endGame()
+        endGame();
         return;
     }
 
-    listenKeyboardOneClick()
+    listenKeyboardOneClick();
 }
 
 // функция движения вверх
@@ -128,15 +149,21 @@ async function moveRight() {
 
 async function slidesTiles(groupedCells) { // смещение плиток вверх по группу
     const promises = [];
-    console.log(groupedCells)
+    console.log(groupedCells);
     groupedCells.forEach(group => slideTilesInGroup(group, promises));
 
     await Promise.all(promises);
 
     grid.cells.forEach(cell => {
         if (cell.hasTileForMerge()) {
-            score = score + cell.mergeTiles();
-            fieldScore.innerHTML = `${score}`
+            let newScore = cell.mergeTiles();
+            score = score + newScore;
+            fieldScore.innerHTML = `${score}`;
+
+
+            if (newScore === 2048) {
+                showWin();
+            }
         } 
     })
 }
@@ -175,19 +202,19 @@ function slideTilesInGroup(group, promises) { // смещение каждой �
 // функции, которые проверяют при клике на стрелку будет ли двигаться хоть 1 ячейка.
 // Чтобы при клике на стрелку, если ничего не двигается, не возникала новая плитка
 function canMoveUp() {
-    return canMove(grid.cellsGroupedByColumn())
+    return canMove(grid.cellsGroupedByColumn());
 }
 
 function canMoveDown() {
-    return canMove(grid.cellsGroupedByReversedColumn())
+    return canMove(grid.cellsGroupedByReversedColumn());
 }
 
 function canMoveLeft() {
-    return canMove(grid.cellsGroupedByRow())
+    return canMove(grid.cellsGroupedByRow());
 }
 
 function canMoveRight() {
-    return canMove(grid.cellsGroupedByReversedRow())
+    return canMove(grid.cellsGroupedByReversedRow());
 }
 
 function canMove(groupedCells) {
@@ -197,14 +224,14 @@ function canMove(groupedCells) {
 function canMoveInGroup(group) {
     return group.some((cell, index) => {
         if (index === 0) {
-            return false
+            return false;
         }
 
         if (cell.isEmpty()) {
-            return false
+            return false;
         }
 
-        const targetCell = group[index - 1]
+        const targetCell = group[index - 1];
         return targetCell.canAccept(cell.linkedTile);
     });
 }

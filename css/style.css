@@ -173,7 +173,7 @@ body {
 
 /* POP UP */
 .popup {
-    position: fixed;
+    position: absolute;
     top: 15%;
     left: 30%;
     right: 30%;
@@ -194,7 +194,7 @@ body {
     margin-bottom: 50px;
 }
 
-.gameover-button {
+.popup-button {
     background-color: rgba(51, 51, 51, 0.8);
     color: var(--basic-white);
     border-radius: 15px;
@@ -209,9 +209,13 @@ body {
     transition-duration: 0.3s;
 }
 
-.gameover-button:hover,
-.gameover-button:focus {
+.popup-button:hover,
+.popup-button:focus {
     box-shadow: 0px 0px 5px 3px rgba(255, 255, 255, 0.5);
+}
+
+.button-wrapper {
+    display: flex;
 }
 
 /* MAIN */
@@ -266,7 +270,7 @@ body {
     background-color: hsl(30, 60%, var(--bg-lightness));
     border-radius: 1vmin;
 
-    font-size: 6.5vmin;
+    font-size: 5vmin;
     font-weight: 700;
     color: hsl(25, 60%, var(--text-lightness));;
 
